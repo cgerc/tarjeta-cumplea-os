@@ -80,121 +80,10 @@
             margin: 20px auto;
         }
 
-        .sonic-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+       .img src {
 
-        .sonic-logo {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 20px;
-            animation: bounce 1s ease-in-out infinite;
-        }
-
-        .sonic-character {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-
-        .sonic-body {
-            width: 80px;
-            height: 90px;
-            background: #0066ff;
-            border-radius: 50% 50% 45% 45%;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: inset -5px -5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .sonic-head {
-            width: 70px;
-            height: 70px;
-            background: #0066ff;
-            border-radius: 50%;
-            position: absolute;
-            left: 50%;
-            top: 20px;
-            transform: translateX(-50%);
-            box-shadow: inset -5px -5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .sonic-face {
-            width: 45px;
-            height: 40px;
-            background: #ffd4a3;
-            border-radius: 50%;
-            position: absolute;
-            left: 50%;
-            top: 55%;
-            transform: translate(-50%, -50%);
-        }
-
-        .sonic-eye {
-            width: 18px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            top: 8px;
-            border: 2px solid black;
-        }
-
-        .sonic-eye-left {
-            left: 8px;
-        }
-
-        .sonic-eye-right {
-            right: 8px;
-        }
-
-        .sonic-pupil {
-            width: 8px;
-            height: 10px;
-            background: #00aaff;
-            border-radius: 50%;
-            position: absolute;
-            top: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 1px solid black;
-        }
-
-        .sonic-nose {
-            width: 8px;
-            height: 6px;
-            background: black;
-            border-radius: 50%;
-            position: absolute;
-            left: 50%;
-            top: 22px;
-            transform: translateX(-50%);
-        }
-
-        .sonic-mouth {
-            width: 15px;
-            height: 8px;
-            border: 2px solid black;
-            border-top: none;
-            border-radius: 0 0 15px 15px;
-            position: absolute;
-            left: 50%;
-            top: 26px;
-            transform: translateX(-50%);
-        }
-
-        .sonic-quill {
-            width: 25px;
-            height: 35px;
-            background: #0066ff;
-            position: absolute;
-            border-radius: 50% 50% 0 0;
-            transform-origin: bottom;
-        }
-
+        border-radius: 10px;
+       }
         .quill-1 {
             left: -5px;
             top: 15px;
@@ -219,33 +108,6 @@
             transform: rotate(30deg);
         }
 
-        .sonic-ear {
-            width: 15px;
-            height: 20px;
-            background: #0066ff;
-            border-radius: 50% 50% 50% 0;
-            position: absolute;
-            top: 25px;
-        }
-
-        .ear-left {
-            left: 5px;
-            transform: rotate(-20deg);
-        }
-
-        .ear-right {
-            right: 5px;
-            transform: rotate(20deg);
-        }
-
-        .sonic-glove {
-            width: 20px;
-            height: 20px;
-            background: white;
-            border-radius: 50%;
-            position: absolute;
-            border: 2px solid #ddd;
-        }
 
         .glove-left {
             left: 5px;
@@ -257,34 +119,7 @@
             top: 55px;
         }
 
-        .sonic-shoe {
-            width: 30px;
-            height: 18px;
-            background: #ff0000;
-            border-radius: 40% 40% 20% 20%;
-            position: absolute;
-            top: 95px;
-            border: 2px solid white;
-        }
 
-        .shoe-left {
-            left: 10px;
-        }
-
-        .shoe-right {
-            right: 10px;
-        }
-
-        .shoe-stripe {
-            width: 25px;
-            height: 3px;
-            background: white;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 2px;
-        }
 
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
@@ -563,18 +398,14 @@
                     </div>
                 </div>
             </div>
-            <h1 class="title">¡FIESTA DE CUMPLEAÑOS!</h1>
+            <img src="sonicbaile.gif" alt="">
+            <h1 class="title">¡Acompáñanos a celebrar!</h1>
         </div>
 
-        <div class="invite-content">
-            <div class="info-item">
-                <span class="icon">🎂</span>
-                <strong>Cumpleañero:</strong> <span id="name">[Nombre]</span>
-            </div>
-            
+        <div class="invite-content">   
             <div style="text-align: center;">
                 <div class="age-badge">
-                    <span id="age">[Edad]</span> AÑOS
+                    <span id="age">[Edad]</span> años
                 </div>
             </div>
 
@@ -599,13 +430,8 @@
             <h3 style="color: #0052cc; text-align: center; margin-bottom: 20px;">📝 Confirmación de Asistencia</h3>
             
             <div class="form-group">
-                <label for="guestName">Nombre completo del invitado *</label>
-                <input type="text" id="guestName" placeholder="Ej: María González" required>
-            </div>
-
-            <div class="form-group">
-                <label for="guestCount">¿Cuántas personas asistirán? *</label>
-                <input type="number" id="guestCount" min="1" max="10" value="1" required>
+                <label for="guestName">Nombre del/la invitad@ *</label>
+                <input type="text" id="guestName" placeholder="Nombre y apellido" required>
             </div>
 
             <div class="form-group">
@@ -625,7 +451,7 @@
             </div>
 
             <div id="confirmMessage" class="message hidden">
-                ¡Genial! ¡Nos vemos en la fiesta! 🎉
+                ¡Nos vemos en la fiesta! 🎉
             </div>
         </div>
 
@@ -635,7 +461,6 @@
         </div>
 
         <div style="text-align: center; margin-top: 20px;">
-            <button class="button" onclick="editar()">✏️ EDITAR INVITACIÓN</button>
             <button class="button" onclick="verInvitados()">👥 VER INVITADOS</button>
         </div>
     </div>
@@ -716,7 +541,6 @@
             
             // Limpiar formulario
             document.getElementById('guestName').value = '';
-            document.getElementById('guestCount').value = '1';
             document.getElementById('hasCar').checked = false;
             document.getElementById('dietary').value = '';
 
@@ -736,7 +560,6 @@
                 item.className = 'guest-item';
                 item.innerHTML = `
                     <p><strong>${guest.name}</strong></p>
-                    <p>👥 Cantidad de personas: ${guest.count}</p>
                     <p>🚗 Viene en auto: ${guest.hasCar ? 'Sí' : 'No'}</p>
                     <p>🍽️ Restricciones: ${guest.dietary}</p>
                 `;
@@ -759,13 +582,13 @@
         }
 
         function editar() {
-            const name = prompt('Nombre del cumpleañero:', document.getElementById('name').textContent);
+            
             const age = prompt('Edad:', document.getElementById('age').textContent);
             const date = prompt('Fecha (ej: Sábado 25 de Enero):', document.getElementById('date').textContent);
             const time = prompt('Hora:', document.getElementById('time').textContent);
             const place = prompt('Lugar:', document.getElementById('place').textContent);
 
-            if (name) document.getElementById('name').textContent = name;
+            
             if (age) document.getElementById('age').textContent = age;
             if (date) document.getElementById('date').textContent = date;
             if (time) document.getElementById('time').textContent = time;
@@ -774,11 +597,11 @@
 
         // Inicializar con datos de ejemplo
         window.onload = function() {
-            document.getElementById('name').textContent = 'Sonic';
-            document.getElementById('age').textContent = '8';
-            document.getElementById('date').textContent = 'Sábado 25 de Enero';
-            document.getElementById('time').textContent = '3:00 PM';
-            document.getElementById('place').textContent = 'Green Hill Zone';
+           
+            document.getElementById('age').textContent = 'Santino 5';
+            document.getElementById('date').textContent = 'Sábado 17 de Enero';
+            document.getElementById('time').textContent = '16:00 hrs';
+            document.getElementById('place').textContent = '';
         };
     </script>
 </body>
