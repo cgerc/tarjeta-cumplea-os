@@ -64,6 +64,23 @@
             height: auto;
             display: block;
             margin: 0 auto;
+            border-radius: 3%;
+            border: 5px solid #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+        }
+
+        @media (max-width: 768px) {
+            img {
+                border-width: 3px;
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            }
+        }
+
+        @media (max-width: 480px) {
+            img {
+                border-width: 2px;
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            }
         }
 
         .quill-1 {
@@ -495,7 +512,7 @@
         <div class="speed-lines" style="top: 80%; animation-delay: 1s;"></div>
         
         <div class="sonic-header">
-           <img src="sonicbaile.gif" alt="Sonic bailando" style="border-radius: 3%; border: 5px solid #ffd700; box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);">
+           <img src="sonicbaile.gif" alt="Sonic bailando">
             <h1 class="title" style="text-align:center">¡Acompáñanos a celebrar!</h1>
         </div>
 
@@ -559,6 +576,7 @@
 
         <div style="text-align: center; margin-top: 20px;">
             <button class="button" onclick="verInvitados()">👥 VER INVITADOS</button>
+            <button class="button" onclick="descargarExcel()" style="background: linear-gradient(135deg, #00cc00, #00aa00);">📥 DESCARGAR EXCEL</button>
         </div>
     </div>
 
@@ -571,6 +589,9 @@
     <audio id="backgroundMusic" loop>
         <source src="https://cdn.freesound.org/previews/442/442127_5121236-lq.mp3" type="audio/mpeg">
     </audio>
+
+    <!-- Cargar SheetJS para Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
         let guests = [];
@@ -721,6 +742,42 @@
             } else {
                 guestList.classList.add('hidden');
             }
+        }
+
+        function descargarExcel() {
+            if (guests.length === 0) {
+                alert('No hay invitados para descargar');
+                return;
+            }
+
+            // Preparar datos para Excel
+            const datosExcel = guests.map((guest, index) => ({
+                'N°': index + 1,
+                'Nombre': guest.name,
+                'Viene en Auto': guest.hasCar ? 'Sí' : 'No',
+                'Restricciones Alimentarias': guest.dietary
+            }));
+
+            // Crear libro de Excel
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.json_to_sheet(datosExcel);
+
+            // Ajustar ancho de columnas
+            ws['!cols'] = [
+                { wch: 5 },  // N°
+                { wch: 30 }, // Nombre
+                { wch: 15 }, // Viene en Auto
+                { wch: 40 }  // Restricciones
+            ];
+
+            // Agregar hoja al libro
+            XLSX.utils.book_append_sheet(wb, ws, 'Invitados');
+
+            // Descargar archivo
+            const fecha = new Date().toLocaleDateString('es-CL').replace(/\//g, '-');
+            XLSX.writeFile(wb, `Invitados_Cumpleaños_Santino_${fecha}.xlsx`);
+
+            alert('¡Excel descargado exitosamente! 📊');
         }
     </script>
 </body>
