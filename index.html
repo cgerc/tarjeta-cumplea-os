@@ -59,10 +59,13 @@
             margin: 20px auto;
         }
 
-       .img src {
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
 
-        border-radius: 10px;
-       }
         .quill-1 {
             left: -5px;
             top: 15px;
@@ -87,7 +90,6 @@
             transform: rotate(30deg);
         }
 
-
         .glove-left {
             left: 5px;
             top: 55px;
@@ -97,8 +99,6 @@
             right: 5px;
             top: 55px;
         }
-
-
 
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
@@ -134,7 +134,6 @@
             align-items: center;
             gap: 10px;
         }
-
 
         .age-badge {
             display: inline-block;
@@ -324,6 +323,112 @@
             from { opacity: 0; transform: scale(0.8); }
             to { opacity: 1; transform: scale(1); }
         }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                border-radius: 20px;
+                border-width: 3px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .age-badge {
+                font-size: 22px;
+                padding: 8px 20px;
+            }
+
+            .info-item {
+                font-size: 16px;
+            }
+
+            .button {
+                padding: 12px 30px;
+                font-size: 16px;
+                margin: 15px 5px;
+            }
+
+            .invite-content,
+            .form-container,
+            .guest-list {
+                padding: 20px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px 0;
+            }
+
+            .container {
+                padding: 15px;
+                width: 95%;
+                border-radius: 15px;
+            }
+
+            .title {
+                font-size: 20px;
+                text-shadow: 2px 2px 0 #ff0000;
+            }
+
+            .age-badge {
+                font-size: 18px;
+                padding: 6px 15px;
+            }
+
+            .info-item {
+                font-size: 14px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .button {
+                padding: 10px 20px;
+                font-size: 14px;
+                margin: 10px 0;
+                width: 100%;
+            }
+
+            .invite-content,
+            .form-container,
+            .guest-list {
+                padding: 15px;
+            }
+
+            .guest-list {
+                max-height: 250px;
+            }
+
+            .guest-item {
+                padding: 10px;
+            }
+
+            .guest-item p {
+                font-size: 13px;
+            }
+
+            .message {
+                padding: 15px;
+                font-size: 16px;
+            }
+        }
+
+        /* Tablet landscape */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                max-width: 700px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -336,38 +441,6 @@
         <div class="speed-lines" style="top: 80%; animation-delay: 1s;"></div>
         
         <div class="sonic-header">
-            <div class="sonic-logo">
-                <div class="sonic-character">
-                    <div class="sonic-head">
-                        <div class="sonic-quill quill-1"></div>
-                        <div class="sonic-quill quill-2"></div>
-                        <div class="sonic-quill quill-3"></div>
-                        <div class="sonic-quill quill-4"></div>
-                        <div class="sonic-ear ear-left"></div>
-                        <div class="sonic-ear ear-right"></div>
-                        <div class="sonic-face">
-                            <div class="sonic-eye sonic-eye-left">
-                                <div class="sonic-pupil"></div>
-                            </div>
-                            <div class="sonic-eye sonic-eye-right">
-                                <div class="sonic-pupil"></div>
-                            </div>
-                            <div class="sonic-nose"></div>
-                            <div class="sonic-mouth"></div>
-                        </div>
-                    </div>
-                    <div class="sonic-body">
-                        <div class="sonic-glove glove-left"></div>
-                        <div class="sonic-glove glove-right"></div>
-                    </div>
-                    <div class="sonic-shoe shoe-left">
-                        <div class="shoe-stripe"></div>
-                    </div>
-                    <div class="sonic-shoe shoe-right">
-                        <div class="shoe-stripe"></div>
-                    </div>
-                </div>
-            </div>
            <img src="sonicbaile.gif" alt="Sonic bailando" style="border-radius: 3%; border: 5px solid #ffd700; box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);">
             <h1 class="title" style="text-align:center">¡Acompáñanos a celebrar!</h1>
         </div>
@@ -375,18 +448,18 @@
         <div class="invite-content">   
             <div style="text-align: center;">
                 <div class="age-badge">
-                    <span id="age">[Edad]</span> años
+                    <span id="age">Santino 5</span> años
                 </div>
             </div>
 
             <div class="info-item">
                 <span class="icon">📅</span>
-                <strong>Fecha:</strong> <span id="date">[Fecha]</span>
+                <strong>Fecha:</strong> <span id="date">Sábado 17 de Enero</span>
             </div>
 
             <div class="info-item">
                 <span class="icon">⏰</span>
-                <strong>Hora:</strong> <span id="time">[Hora]</span>
+                <strong>Hora:</strong> <span id="time">16:00 hrs</span>
             </div>
 
            <div class="info-item">
@@ -436,10 +509,8 @@
     </div>
 
     <script>
-        // Array para almacenar invitados
         let guests = [];
 
-        // Crear estrellas
         const starsContainer = document.getElementById('stars');
         for (let i = 0; i < 50; i++) {
             const star = document.createElement('div');
@@ -450,18 +521,6 @@
             starsContainer.appendChild(star);
         }
 
-        // Crear anillos flotantes
-        const ringsContainer = document.getElementById('rings');
-        for (let i = 0; i < 8; i++) {
-            const ring = document.createElement('div');
-            ring.className = 'ring';
-            ring.style.left = Math.random() * 100 + '%';
-            ring.style.top = Math.random() * 100 + '%';
-            ring.style.animationDelay = Math.random() * 3 + 's';
-            ringsContainer.appendChild(ring);
-        }
-
-        // Función para crear confetti
         function createConfetti() {
             const colors = ['#ff0000', '#ffd700', '#0066ff', '#00ff00', '#ff00ff'];
             for (let i = 0; i < 50; i++) {
@@ -482,7 +541,6 @@
 
         function confirmarAsistencia() {
             const name = document.getElementById('guestName').value.trim();
-            const count = document.getElementById('guestCount').value;
             const hasCar = document.getElementById('hasCar').checked;
             const dietary = document.getElementById('dietary').value.trim();
 
@@ -491,14 +549,8 @@
                 return;
             }
 
-            if (!count || count < 1) {
-                alert('Por favor indica cuántas personas asistirán');
-                return;
-            }
-
             const guest = {
                 name: name,
-                count: count,
                 hasCar: hasCar,
                 dietary: dietary || 'Ninguna'
             };
@@ -509,7 +561,6 @@
             message.classList.remove('hidden');
             createConfetti();
             
-            // Limpiar formulario
             document.getElementById('guestName').value = '';
             document.getElementById('hasCar').checked = false;
             document.getElementById('dietary').value = '';
@@ -550,29 +601,6 @@
                 guestList.classList.add('hidden');
             }
         }
-
-        function editar() {
-            
-            const age = prompt('Edad:', document.getElementById('age').textContent);
-            const date = prompt('Fecha (ej: Sábado 25 de Enero):', document.getElementById('date').textContent);
-            const time = prompt('Hora:', document.getElementById('time').textContent);
-            const place = prompt('Lugar:', document.getElementById('place').textContent);
-
-            
-            if (age) document.getElementById('age').textContent = age;
-            if (date) document.getElementById('date').textContent = date;
-            if (time) document.getElementById('time').textContent = time;
-            if (place) document.getElementById('place').textContent = place;
-        }
-
-        // Inicializar con datos de ejemplo
-        window.onload = function() {
-           
-            document.getElementById('age').textContent = 'Santino 5';
-            document.getElementById('date').textContent = 'Sábado 17 de Enero';
-            document.getElementById('time').textContent = '16:00 hrs';
-            
-        };
     </script>
 </body>
 </html>
