@@ -83,45 +83,6 @@
             }
         }
 
-        .quill-1 {
-            left: -5px;
-            top: 15px;
-            transform: rotate(-30deg);
-        }
-
-        .quill-2 {
-            left: 10px;
-            top: 5px;
-            transform: rotate(-10deg);
-        }
-
-        .quill-3 {
-            right: 10px;
-            top: 5px;
-            transform: rotate(10deg);
-        }
-
-        .quill-4 {
-            right: -5px;
-            top: 15px;
-            transform: rotate(30deg);
-        }
-
-        .glove-left {
-            left: 5px;
-            top: 55px;
-        }
-
-        .glove-right {
-            right: 5px;
-            top: 55px;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
         .title {
             color: white;
             font-size: 32px;
@@ -354,14 +315,14 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 5px 20px rgba(255, 0, 0, 0.6);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
             z-index: 1000;
             transition: all 0.3s ease;
         }
 
         .music-control:hover {
             transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(255, 0, 0, 0.8);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.8);
         }
 
         .music-control:active {
@@ -395,7 +356,6 @@
             }
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .container {
                 padding: 25px;
@@ -494,7 +454,6 @@
             }
         }
 
-        /* Tablet landscape */
         @media (min-width: 769px) and (max-width: 1024px) {
             .container {
                 max-width: 700px;
@@ -504,7 +463,6 @@
 </head>
 <body>
     <div class="stars" id="stars"></div>
-    <div class="rings" id="rings"></div>
     
     <div class="container">
         <div class="speed-lines" style="top: 20%;"></div>
@@ -590,37 +548,35 @@
         <source src="https://cdn.freesound.org/previews/442/442127_5121236-lq.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Cargar SheetJS para Excel -->
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <!-- SheetJS para Excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
+        // ====== CONFIGURACIÓN DE FIREBASE ======
+        const firebaseConfig = {
+          apiKey: "AIzaSyD5goNmwrAVseZlhBNLaCU7qfKZCs5sThY",
+          authDomain: "tarjeta-cumple-c774c.firebaseapp.com",
+          projectId: "tarjeta-cumple-c774c",
+          storageBucket: "tarjeta-cumple-c774c.firebaseapp.com",
+          messagingSenderId: "272528438834",
+          appId: "1:272528438834:web:5b3c7cde927b14f4a6ee2b",
+          measurementId: "G-F7T3LM57WB"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const invitadosRef = db.collection('invitados');
+
         let guests = [];
         let musicPlaying = false;
         const music = document.getElementById('backgroundMusic');
         const musicControl = document.getElementById('musicControl');
         const musicIcon = document.getElementById('musicIcon');
-
-        // Cargar invitados guardados al iniciar
-        async function cargarInvitados() {
-            try {
-                const result = await window.storage.get('sonic-guests', true);
-                if (result && result.value) {
-                    guests = JSON.parse(result.value);
-                    actualizarListaInvitados();
-                }
-            } catch (error) {
-                console.log('No hay invitados previos guardados');
-            }
-        }
-
-        // Guardar invitados
-        async function guardarInvitados() {
-            try {
-                await window.storage.set('sonic-guests', JSON.stringify(guests), true);
-            } catch (error) {
-                console.error('Error al guardar invitados:', error);
-            }
-        }
 
         function toggleMusic() {
             if (musicPlaying) {
@@ -637,7 +593,6 @@
             musicPlaying = !musicPlaying;
         }
 
-        // Intentar reproducir música automáticamente
         window.addEventListener('load', () => {
             music.volume = 0.3;
             music.play().then(() => {
@@ -645,11 +600,11 @@
                 musicIcon.textContent = '🔊';
                 musicControl.classList.add('playing');
             }).catch(e => {
-                console.log('Autoplay bloqueado, el usuario debe hacer clic');
+                console.log('Autoplay bloqueado');
             });
-            
-            // Cargar invitados guardados
-            cargarInvitados();
+
+            // Cargar invitados desde Firebase en tiempo real
+            cargarInvitadosDesdeFirebase();
         });
 
         const starsContainer = document.getElementById('stars');
@@ -680,7 +635,8 @@
             }
         }
 
-        function confirmarAsistencia() {
+        // === CONFIRMAR ASISTENCIA Y GUARDAR EN FIREBASE ===
+        async function confirmarAsistencia() {
             const name = document.getElementById('guestName').value.trim();
             const hasCar = document.getElementById('hasCar').checked;
             const dietary = document.getElementById('dietary').value.trim();
@@ -690,35 +646,50 @@
                 return;
             }
 
-            const guest = {
-                name: name,
-                hasCar: hasCar,
-                dietary: dietary || 'Ninguna'
-            };
+            try {
+                await invitadosRef.add({
+                    name: name,
+                    hasCar: hasCar,
+                    dietary: dietary || 'Ninguna',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
 
-            guests.push(guest);
-            guardarInvitados(); // Guardar en storage
+                const message = document.getElementById('confirmMessage');
+                message.classList.remove('hidden');
+                createConfetti();
 
-            const message = document.getElementById('confirmMessage');
-            message.classList.remove('hidden');
-            createConfetti();
-            
-            document.getElementById('guestName').value = '';
-            document.getElementById('hasCar').checked = false;
-            document.getElementById('dietary').value = '';
+                document.getElementById('guestName').value = '';
+                document.getElementById('hasCar').checked = false;
+                document.getElementById('dietary').value = '';
 
-            setTimeout(() => {
-                message.classList.add('hidden');
-            }, 3000);
+                setTimeout(() => message.classList.add('hidden'), 3000);
+            } catch (error) {
+                alert('Error al confirmar. Intenta de nuevo.');
+                console.error(error);
+            }
+        }
 
-            actualizarListaInvitados();
+        // === CARGAR INVITADOS DESDE FIREBASE EN TIEMPO REAL ===
+        function cargarInvitadosDesdeFirebase() {
+            invitadosRef.orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+                guests = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    guests.push({
+                        name: data.name,
+                        hasCar: data.hasCar,
+                        dietary: data.dietary
+                    });
+                });
+                actualizarListaInvitados();
+            });
         }
 
         function actualizarListaInvitados() {
             const guestItems = document.getElementById('guestItems');
             guestItems.innerHTML = '';
 
-            guests.forEach((guest, index) => {
+            guests.forEach((guest) => {
                 const item = document.createElement('div');
                 item.className = 'guest-item';
                 item.innerHTML = `
@@ -750,7 +721,6 @@
                 return;
             }
 
-            // Preparar datos para Excel
             const datosExcel = guests.map((guest, index) => ({
                 'N°': index + 1,
                 'Nombre': guest.name,
@@ -758,22 +728,18 @@
                 'Restricciones Alimentarias': guest.dietary
             }));
 
-            // Crear libro de Excel
             const wb = XLSX.utils.book_new();
             const ws = XLSX.utils.json_to_sheet(datosExcel);
 
-            // Ajustar ancho de columnas
             ws['!cols'] = [
-                { wch: 5 },  // N°
-                { wch: 30 }, // Nombre
-                { wch: 15 }, // Viene en Auto
-                { wch: 40 }  // Restricciones
+                { wch: 5 },
+                { wch: 30 },
+                { wch: 15 },
+                { wch: 40 }
             ];
 
-            // Agregar hoja al libro
             XLSX.utils.book_append_sheet(wb, ws, 'Invitados');
 
-            // Descargar archivo
             const fecha = new Date().toLocaleDateString('es-CL').replace(/\//g, '-');
             XLSX.writeFile(wb, `Invitados_Cumpleaños_Santino_${fecha}.xlsx`);
 
